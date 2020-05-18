@@ -32,13 +32,25 @@ public class UserServlet extends HttpServlet {
                 case "create":
                     insertUser(request, response);
                     break;
-//                case "edit":
-//                    updateUser(request, response);
-//                    break;
+                case "edit":
+                    updateUser(request, response);
+                    break;
             }
         } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
+    }
+
+    private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String country = request.getParameter("country");
+
+        User book = new User(id, name, email, country);
+        userDAO.updateUser(book);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
